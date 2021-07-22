@@ -19,9 +19,9 @@ public class StoreController {
     private StoreService storeService;
 
     @PostMapping("/api/v1/order")
-    public ResponseEntity<?> setOrder(@RequestBody List<OrderRequest> orderProducts){
+    public ResponseEntity<?> setOrder(@RequestBody OrderRequest orderRequest){
 
-        String res = storeService.calculatePrice(orderProducts);
+        String res = storeService.calculatePrice(orderRequest);
         return new ResponseEntity<>(res , HttpStatus.CREATED);
 
     }

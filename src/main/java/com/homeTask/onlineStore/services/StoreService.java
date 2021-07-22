@@ -38,19 +38,19 @@ public class StoreService {
         }
     }
 
-    public String calculatePrice(List<OrderRequest> orderProducts){
+    public String calculatePrice(OrderRequest orderRequest){
 
             Double[] totalPrice = {0.0};
             StringBuilder res = new StringBuilder();
 
-            if(orderProducts.isEmpty()){
+            if(orderRequest.getGroceries().isEmpty()){
                 return res.append(CART_EMPTY).toString();
             }
-            orderProducts.stream().forEach((orderReq) -> {
+            orderRequest.getGroceries().stream().forEach((orderReq) -> {
 
                 try {
                     Optional<Product> product = products.stream()
-                            .filter(p -> p.getProduct_name().equals(orderReq.getName()))
+                            .filter(p -> p.getProduct_name().trim().equals(orderReq.getName().trim()))
                             .findAny();
 
                     if (product.isPresent()) {
@@ -68,10 +68,6 @@ public class StoreService {
                     logger.error(e.getMessage());
                 }
             });
-
-            if(totalPrice[0] == 0.0){
-                return res.append("not found products!").toString();
-            }
 
             res.append("total price - ").append(String.format("%.2f", totalPrice[0]));
 

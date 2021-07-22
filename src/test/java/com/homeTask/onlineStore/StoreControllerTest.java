@@ -2,6 +2,7 @@ package com.homeTask.onlineStore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.homeTask.onlineStore.controllers.StoreController;
+import com.homeTask.onlineStore.modal.Groceris;
 import com.homeTask.onlineStore.modal.OrderRequest;
 import com.homeTask.onlineStore.services.StoreService;
 import org.junit.jupiter.api.Test;
@@ -32,22 +33,17 @@ class StoreControllerTest {
     @Test
     void setOrder() throws Exception {
 
-        List<OrderRequest> orderRequests = new ArrayList<>();
-        orderRequests.add(new OrderRequest
+        List<Groceris> grocerises = new ArrayList<>();
+        grocerises.add(new Groceris
                 ("Nutiva, Organic Hemp Seed, Raw Shelled, 19 oz (539 g)", "1"));
+        OrderRequest orderRequest = new OrderRequest();
 
         mockMvc.perform( MockMvcRequestBuilders
                 .post("http://localhost:8882/api/v1/order")
-                .content(asJsonString(orderRequests))
+                .content(asJsonString(orderRequest))
                 .accept(MediaType.ALL)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(
-                        content().string("47362,Nutiva, Organic Hemp Seed, Raw Shelled, 19 oz (539 g),539 g,1,32.37\n" +
-                        "total price - 32.37")
-                );
-
-
+                .andExpect(status().isCreated());
     }
 
     public static String asJsonString(final Object obj) {
